@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Login } from "../components/Login";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const login = () => {
   const router = useRouter();
@@ -13,7 +14,15 @@ const login = () => {
     }
   }, [router]);
 
-  return <Login />;
+  return (
+    <>
+      <Head>
+        <title>Login</title>
+        <meta name="description" content="Login to access your account." />{" "}
+      </Head>
+      <Login />
+    </>
+  );
 };
 
 export default login;
