@@ -4,7 +4,7 @@ import UnityLoader from "./UnityLoader";
 
 const Lesson = () => {
   return (
-    <Box
+    <Box // Wrapper Box for the lesson content
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -41,6 +41,7 @@ const Lesson = () => {
           padding: 1,
         }}
       >
+        {/* It renders the simulation */}
         <UnityLoader />
       </Box>
     </Box>

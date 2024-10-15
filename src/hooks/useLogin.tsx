@@ -1,17 +1,32 @@
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
-
-const validCredentials = {
-  email: "fakedoor@challenge.com",
-  password: "password123",
-};
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginSchemaType } from "../schemas/login.schema";
 
 export const useLogin = (
   setSnackbarOpen: Dispatch<SetStateAction<boolean>>
 ) => {
   const router = useRouter();
 
-  const handleLogin = (email: string, password: string) => {
+  // React Hook Form setup with Zod resolver
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  // Handle the login process
+  const onSubmit = (data: LoginSchemaType) => {
+    const { email, password } = data;
+
+    const validCredentials = {
+      email: "fakedoor@challenge.com",
+      password: "password123",
+    };
+
     if (
       email === validCredentials.email &&
       password === validCredentials.password
@@ -26,6 +41,9 @@ export const useLogin = (
   };
 
   return {
-    handleLogin,
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
   };
 };

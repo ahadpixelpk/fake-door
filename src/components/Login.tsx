@@ -10,21 +10,16 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
-import { Navbar } from "./Navbar";
+import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
+import FunctionalityDialog from "./FunctionalityDialog";
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const { handleLogin } = useLogin(setSnackbarOpen);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleLogin(email, password);
-  };
+  // Using custom hook to handle form submission and validation
+  const { register, handleSubmit, errors, onSubmit } =
+    useLogin(setSnackbarOpen);
 
   return (
     <>
@@ -33,6 +28,7 @@ export const Login = () => {
           container
           spacing={4}
           alignItems="center"
+          justifyContent="center"
           style={{ height: "100vh" }}
         >
           <Grid
@@ -40,26 +36,31 @@ export const Login = () => {
             xs={12}
             sm={6}
             sx={{
-              paddingX: 8,
+              paddingX: { xs: 2, sm: 8 },
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
             }}
           >
             <Box mb={12}>
               <Image
-                src={
-                  "https://fakedoor.com/_next/static/media/fakedoor-logo.ae0eb839.svg"
-                }
+                src="https://fakedoor.com/_next/static/media/fakedoor-logo.ae0eb839.svg"
                 alt="logo"
                 height={70}
                 width={70}
               />
             </Box>
 
-            <Box component="form" onSubmit={handleSubmit}>
-              <Typography variant="h4" mb={4} fontWeight={"bold"}>
-                Login
+            {/* Form start */}
+            <Box
+              component="form"
+              onSubmit={handleSubmit(onSubmit)}
+              width="100%"
+            >
+              <Typography variant="h5" mb={4} fontWeight={"bold"}>
+                Welcome Back!
               </Typography>
               <Box
                 sx={{
@@ -75,31 +76,27 @@ export const Login = () => {
                   label="Email"
                   variant="outlined"
                   fullWidth
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  InputProps={{
-                    sx: { borderRadius: 50 },
-                  }}
-                  InputLabelProps={{
-                    sx: { fontWeight: "bold" },
-                  }}
+                  InputProps={{ sx: { borderRadius: 50 } }}
+                  InputLabelProps={{ sx: { fontWeight: "bold" } }}
+                  {...register("email")}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
                 />
+
                 <TextField
                   id="password"
                   label="Password"
                   type="password"
                   variant="outlined"
                   fullWidth
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  InputProps={{
-                    sx: { borderRadius: 50 },
-                  }}
-                  InputLabelProps={{
-                    sx: { fontWeight: "bold" },
-                  }}
+                  InputProps={{ sx: { borderRadius: 50 } }}
+                  InputLabelProps={{ sx: { fontWeight: "bold" } }}
+                  {...register("password")}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
                 />
               </Box>
+
               <Button
                 variant="outlined"
                 fullWidth
@@ -110,16 +107,12 @@ export const Login = () => {
                   paddingY: 1.2,
                 }}
                 size="large"
-                type="submit" // Set type to submit to trigger the form submission
+                type="submit"
               >
                 Login
               </Button>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
+
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography
                   mt={5}
                   variant="caption"
@@ -131,6 +124,8 @@ export const Login = () => {
                 </Typography>
               </Box>
             </Box>
+            {/* Form end */}
+
             <Divider
               orientation="horizontal"
               flexItem
@@ -159,12 +154,10 @@ export const Login = () => {
                   }}
                 >
                   {" "}
-                  Sign Up
+                  <FunctionalityDialog text={"Sign up"} />
                 </Typography>
               </Typography>
-              <Typography color="#243BC7" fontWeight={"bold"}>
-                Forgot password?
-              </Typography>
+              <FunctionalityDialog text={"Forgot Password"} />
             </Box>
           </Grid>
 
@@ -172,7 +165,7 @@ export const Login = () => {
             item
             xs={12}
             sm={6}
-            sx={{ display: { sm: "none", md: "block" } }}
+            sx={{ display: { xs: "none", lg: "block" } }} // Display only on large devices and above
           >
             <Image
               src="https://fakedoor.com/_next/static/media/register.b27e65da.svg"
@@ -184,6 +177,8 @@ export const Login = () => {
           </Grid>
         </Grid>
       </Container>
+
+      {/* Snackbar for invalid credentials */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

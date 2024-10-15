@@ -19,6 +19,7 @@ const LessonsList = ({ lesson, index }: { lesson: any; index: number }) => {
 
   return (
     <List
+      // Styling for the list container
       sx={{
         width: "100%",
         maxWidth: 360,

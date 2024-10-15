@@ -12,11 +12,11 @@ import { useGetLessons } from "../hooks/useGetLessons";
 import Lesson from "./Lesson";
 
 const Home = () => {
-  const { data, isLoading } = useGetLessons();
+  const { data, isLoading } = useGetLessons(); // Fetching lesson data and loading state from custom hook
 
   return (
+    // Wrapper Box for the main content,
     <Box
-      // maxWidth="lg"
       sx={{
         mt: 5,
         paddingX: 6,
@@ -65,8 +65,14 @@ const Home = () => {
             <>
               {isLoading ? (
                 <CircularProgress />
+              ) : !data || data?.content.length === 0 ? (
+                <Typography variant="body1" color="error" mt={2}>
+                  Unable to load lessons. Please enable CORS policy in your
+                  browser to access the lesson list.
+                </Typography>
               ) : (
                 <>
+                  {/* Mapping over the first 5 lessons */}
                   {data?.content.slice(0, 5).map((lesson, index) => (
                     <LessonsList
                       key={lesson.id}
