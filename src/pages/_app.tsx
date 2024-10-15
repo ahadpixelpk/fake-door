@@ -1,11 +1,17 @@
 import { AppProps } from "next/app";
 import { QueryProvider } from "../provider/QueryProvider";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryProvider>
-      <Component {...pageProps} />
-    </QueryProvider>
+    <>
+      <Head>
+        <link rel="icon" href="/fakedoor.ico" />
+      </Head>
+      <QueryProvider>
+        <Component {...pageProps} />
+      </QueryProvider>
+    </>
   );
 }
 

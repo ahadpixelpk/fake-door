@@ -17,7 +17,7 @@ const login = () => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>Fake Door | Login</title>
         <meta name="description" content="Login to access your account." />{" "}
       </Head>
       <Login />

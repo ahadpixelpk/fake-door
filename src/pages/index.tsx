@@ -7,7 +7,7 @@ const home = () => {
   return (
     <>
       <Head>
-        <title>Lessons</title>
+        <title>Fake Door | Lessons</title>
         <meta name="description" content="Login to access your account." />{" "}
       </Head>
       <AppLayout children={<Home />} />
